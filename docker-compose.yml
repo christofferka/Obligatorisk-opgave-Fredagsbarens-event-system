@@ -1,0 +1,19 @@
+services:
+  api:
+    build: .
+    command: python api.py
+    environment:
+      HOST: 0.0.0.0
+    ports:
+      - "5000:5000"
+
+  web:
+    build: .
+    command: streamlit run app.py --server.address 0.0.0.0 --server.port 8501
+    ports:
+      - "8501:8501"
+    environment:
+      # Inde i docker-netværket hedder api-containeren bare "api"
+      API_URL: http://api:5000
+    depends_on:
+      - api
